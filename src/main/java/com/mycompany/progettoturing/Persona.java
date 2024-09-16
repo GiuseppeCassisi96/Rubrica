@@ -1,6 +1,8 @@
 
 package com.mycompany.progettoturing;
 
+import java.util.Random;
+
 public class Persona 
 {
 
@@ -10,6 +12,7 @@ public class Persona
     private String indirizzo;
     private String telefono;
     private int eta;
+    private int ID;
     
     Persona(String nome, String cognome,String indirizzo, String telefono, int eta)
     {
@@ -18,6 +21,8 @@ public class Persona
         this.indirizzo = indirizzo;
         this.telefono = telefono;
         this.eta = eta;
+        Random rand = new Random();
+        this.ID = rand.nextInt(1000000000);
     }
     
     
