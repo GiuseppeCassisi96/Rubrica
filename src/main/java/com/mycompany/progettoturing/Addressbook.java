@@ -5,10 +5,12 @@ import java.util.Vector;
 public class AddressBook 
 {
     private Vector<Persona> listOfPeople;
+    SaveSystem save;
     
-    AddressBook()
+    AddressBook(SaveSystem save)
     {
         listOfPeople = new Vector<Persona>();
+        this.save = save;
     }
     boolean AddNewPearson(Persona pearson)
     {
@@ -28,6 +30,7 @@ public class AddressBook
     void RemovePearson(int index)
     {
         GetListOfPeople().remove(index);
+        save.Save(this);
     }
 
     /**
