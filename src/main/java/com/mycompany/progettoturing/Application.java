@@ -6,7 +6,7 @@ import javax.swing.SwingUtilities;
 public class Application 
 {
 
-    public static void main(String[] args) 
+    public static void main(String[] args)
     {
         System.out.println("Application start");
         SaveSystem save = new SaveSystem();

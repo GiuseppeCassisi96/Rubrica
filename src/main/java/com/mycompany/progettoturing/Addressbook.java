@@ -14,7 +14,9 @@ public class AddressBook
     }
     boolean AddNewPearson(Persona pearson)
     {
-       return GetListOfPeople().add(pearson);
+       GetListOfPeople().add(pearson);
+       save.Save(this);
+       return true;
     }
     
     void ModifyPearson(int index, String nome, String cognome,String indirizzo, String telefono, int eta)
@@ -24,6 +26,7 @@ public class AddressBook
         GetListOfPeople().get(index).SetIndirizzo(indirizzo);
         GetListOfPeople().get(index).SetTelefono(telefono);
         GetListOfPeople().get(index).SetEta(eta);
+        save.Save(this);
         
     }
     

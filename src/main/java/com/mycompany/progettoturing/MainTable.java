@@ -2,8 +2,11 @@
 package com.mycompany.progettoturing;
 
 import java.awt.BorderLayout;
-import java.awt.Dimension;
+import java.awt.Dialog;
 import java.awt.FlowLayout;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.JButton;
@@ -14,6 +17,8 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.JTextField;
+import javax.swing.JToolBar;
 import javax.swing.SwingConstants;
 import javax.swing.table.DefaultTableModel;
 
@@ -46,7 +51,8 @@ public class MainTable extends JFrame
         JPanel panel = new JPanel(new BorderLayout());
         panel.add(scrollPane, BorderLayout.LINE_START);
         
-        JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
+        JToolBar toolBar = new JToolBar();
+        toolBar.setFloatable(false);
         
         JButton button1 = new JButton("Nuovo");
         JButton button2 = new JButton("Modifica");
@@ -56,11 +62,112 @@ public class MainTable extends JFrame
             @Override
             public void actionPerformed(ActionEvent e) 
             {
-                JDialog dialog = new JDialog(frame, "Dialogo Modale", true);  
+                //JDialog creation
+                JDialog dialog = new JDialog(frame, "Editor persona", true);  
                 dialog.setSize(800, 600);
-
-                JLabel label = new JLabel("Editor persona", SwingConstants.CENTER);
-                dialog.add(label);
+                dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+                dialog.setLayout(new BorderLayout());
+                
+                //Text field creation
+                JTextField nameText = new JTextField(15); 
+                JTextField cognomeText = new JTextField(15); 
+                JTextField indirizzoText = new JTextField(15); 
+                JTextField telefonoText = new JTextField(15); 
+                JTextField etaText = new JTextField(15); 
+                
+                //I create a JPanel to contains the labels and text fields
+                JPanel inputPanel = new JPanel(new GridBagLayout());
+                GridBagConstraints gbc = new GridBagConstraints();
+                gbc.insets = new Insets(20, 50, 20, 50); 
+                
+                JToolBar toolBar = new JToolBar();
+                toolBar.setFloatable(false);
+                
+                //Labels creation
+                JLabel labelName = new JLabel("Nome:", SwingConstants.CENTER);
+                JLabel labelCognome = new JLabel("Cognome:", SwingConstants.CENTER);
+                JLabel labelIndirizzo = new JLabel("Indirizzo:", SwingConstants.CENTER);
+                JLabel labelTelefono = new JLabel("Telefono:", SwingConstants.CENTER);
+                JLabel labelEta = new JLabel("Eta:", SwingConstants.CENTER);
+                
+                JButton saveButton = new JButton("Salva");
+                saveButton.addActionListener(new ActionListener() {
+                        @Override
+                        public void actionPerformed(ActionEvent e) {
+                            if(nameText.getText().length() <= 0 && cognomeText.getText().length() <= 0 &&
+                            indirizzoText.getText().length() <= 0 && telefonoText.getText().length() <= 0 &&
+                            etaText.getText().length() <= 0)
+                            {
+                                JOptionPane.showMessageDialog(frame, "Compila tutti i campi per salvare!");
+                            }
+                            int eta = Integer.parseInt(etaText.getText());
+                            Persona pearson = new Persona (nameText.getText(), cognomeText.getText(), 
+                            indirizzoText.getText(), telefonoText.getText(), eta);
+                            model.addRow(new Object[]{nameText.getText(),cognomeText.getText(),telefonoText.getText()});
+                            aBook.AddNewPearson(pearson); 
+                            dialog.dispose();
+                        }
+                    });
+                JButton cancelButton = new JButton("Annulla");
+                cancelButton.addActionListener(new ActionListener() {
+                        @Override
+                        public void actionPerformed(ActionEvent e) {
+                            dialog.dispose();  // Chiude il JDialog
+                        }
+                    });
+                
+                toolBar.add(cancelButton);
+                toolBar.add(saveButton);
+                
+                //Here I place the labels and text fields within the panel
+                gbc.gridx = 0;  
+                gbc.gridy = 0;  
+                gbc.anchor = GridBagConstraints.LINE_END;
+                inputPanel.add(labelName, gbc);
+                
+                gbc.gridx = 1;  
+                gbc.anchor = GridBagConstraints.LINE_START;
+                inputPanel.add(nameText, gbc);
+                
+                gbc.gridx = 0;  
+                gbc.gridy = 1;  
+                gbc.anchor = GridBagConstraints.LINE_END;
+                inputPanel.add(labelCognome, gbc);
+                
+                gbc.gridx = 1;  
+                gbc.anchor = GridBagConstraints.LINE_START;
+                inputPanel.add(cognomeText, gbc);
+                
+                gbc.gridx = 0;  
+                gbc.gridy = 2;  
+                gbc.anchor = GridBagConstraints.LINE_END;
+                inputPanel.add(labelIndirizzo, gbc);
+                
+                gbc.gridx = 1;  
+                gbc.anchor = GridBagConstraints.LINE_START;
+                inputPanel.add(indirizzoText, gbc);
+                
+                gbc.gridx = 0;  
+                gbc.gridy = 3;  
+                gbc.anchor = GridBagConstraints.LINE_END;
+                inputPanel.add(labelTelefono, gbc);
+                
+                gbc.gridx = 1; 
+                gbc.anchor = GridBagConstraints.LINE_START;
+                inputPanel.add(telefonoText, gbc);
+                
+                gbc.gridx = 0;  
+                gbc.gridy = 4; 
+                gbc.anchor = GridBagConstraints.LINE_END;
+                inputPanel.add(labelEta, gbc);
+                
+                gbc.gridx = 1;  
+                gbc.anchor = GridBagConstraints.LINE_START;
+                inputPanel.add(etaText, gbc);
+                
+                dialog.add(inputPanel, BorderLayout.CENTER);
+                dialog.add(toolBar, BorderLayout.NORTH);
+                
 
                 dialog.setVisible(true);
             }
@@ -70,18 +177,123 @@ public class MainTable extends JFrame
             @Override
             public void actionPerformed(ActionEvent e) 
             {
+                
+                
                 if(table.getSelectedRowCount() == 0)
                 {
                     JOptionPane.showMessageDialog(frame, "Bisogna selezionare una persona prima di modificarla!");
                 }
                 else
                 {
-                    JDialog dialog = new JDialog(frame, "Dialogo Modale", true);  
+                    //JDialog creation
+                    JDialog dialog = new JDialog(frame, "Editor persona", true);  
                     dialog.setSize(800, 600);
+                    dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+                    dialog.setLayout(new BorderLayout());
 
-                    JLabel label = new JLabel("Editor persona", SwingConstants.CENTER);
-                
-                    dialog.add(label);
+                    Persona temp = aBook.GetListOfPeople().get(table.getSelectedRow());
+                    //Text field creation
+                    JTextField nameText = new JTextField(15);
+                    nameText.setText(temp.GetNome());
+                    JTextField cognomeText = new JTextField(15);
+                    cognomeText.setText(temp.GetCognome());
+                    JTextField indirizzoText = new JTextField(15);
+                    indirizzoText.setText(temp.GetIndirizzo());
+                    JTextField telefonoText = new JTextField(15); 
+                    telefonoText.setText(temp.GetTelefono());
+                    JTextField etaText = new JTextField(15);
+                    etaText.setText(Integer.toString(temp.GetEta()));
+
+                    //I create a JPanel to contains the labels and text fields
+                    JPanel inputPanel = new JPanel(new GridBagLayout());
+                    GridBagConstraints gbc = new GridBagConstraints();
+                    gbc.insets = new Insets(20, 50, 20, 50); 
+
+                    JToolBar toolBar = new JToolBar();
+                    toolBar.setFloatable(false);
+
+                    //Labels creation
+                    JLabel labelName = new JLabel("Nome:", SwingConstants.CENTER);
+                    JLabel labelCognome = new JLabel("Cognome:", SwingConstants.CENTER);
+                    JLabel labelIndirizzo = new JLabel("Indirizzo:", SwingConstants.CENTER);
+                    JLabel labelTelefono = new JLabel("Telefono:", SwingConstants.CENTER);
+                    JLabel labelEta = new JLabel("Eta:", SwingConstants.CENTER);
+
+                    JButton saveButton = new JButton("Salva");
+                    saveButton.addActionListener(new ActionListener() {
+                        @Override
+                        public void actionPerformed(ActionEvent e) {
+                            int eta = Integer.parseInt(etaText.getText());
+                            Persona pearson = new Persona (nameText.getText(), cognomeText.getText(), 
+                            indirizzoText.getText(), telefonoText.getText(), eta);
+                            aBook.ModifyPearson(table.getSelectedRow(), nameText.getText(), cognomeText.getText(),
+                            indirizzoText.getText(), telefonoText.getText(), eta);
+                            model.setValueAt(nameText.getText(), table.getSelectedRow(), 0);
+                            model.setValueAt(cognomeText.getText(), table.getSelectedRow(), 1);
+                            model.setValueAt(indirizzoText.getText(), table.getSelectedRow(), 2);
+                            dialog.dispose();
+                        }
+                    });
+                    JButton cancelButton = new JButton("Annulla");
+                    cancelButton.addActionListener(new ActionListener() {
+                        @Override
+                        public void actionPerformed(ActionEvent e) {
+                            dialog.dispose();  // Chiude il JDialog
+                        }
+                    });
+
+                    toolBar.add(cancelButton);
+                    toolBar.add(saveButton);
+
+                    //Here I place the labels and text fields within the panel
+                    gbc.gridx = 0;  
+                    gbc.gridy = 0;  
+                    gbc.anchor = GridBagConstraints.LINE_END;
+                    inputPanel.add(labelName, gbc);
+
+                    gbc.gridx = 1;  
+                    gbc.anchor = GridBagConstraints.LINE_START;
+                    inputPanel.add(nameText, gbc);
+
+                    gbc.gridx = 0;  
+                    gbc.gridy = 1;  
+                    gbc.anchor = GridBagConstraints.LINE_END;
+                    inputPanel.add(labelCognome, gbc);
+
+                    gbc.gridx = 1;  
+                    gbc.anchor = GridBagConstraints.LINE_START;
+                    inputPanel.add(cognomeText, gbc);
+
+                    gbc.gridx = 0;  
+                    gbc.gridy = 2;  
+                    gbc.anchor = GridBagConstraints.LINE_END;
+                    inputPanel.add(labelIndirizzo, gbc);
+
+                    gbc.gridx = 1;  
+                    gbc.anchor = GridBagConstraints.LINE_START;
+                    inputPanel.add(indirizzoText, gbc);
+
+                    gbc.gridx = 0;  
+                    gbc.gridy = 3;  
+                    gbc.anchor = GridBagConstraints.LINE_END;
+                    inputPanel.add(labelTelefono, gbc);
+
+                    gbc.gridx = 1; 
+                    gbc.anchor = GridBagConstraints.LINE_START;
+                    inputPanel.add(telefonoText, gbc);
+
+                    gbc.gridx = 0;  
+                    gbc.gridy = 4; 
+                    gbc.anchor = GridBagConstraints.LINE_END;
+                    inputPanel.add(labelEta, gbc);
+
+                    gbc.gridx = 1;  
+                    gbc.anchor = GridBagConstraints.LINE_START;
+                    inputPanel.add(etaText, gbc);
+
+                    dialog.add(inputPanel, BorderLayout.CENTER);
+                    dialog.add(toolBar, BorderLayout.NORTH);
+
 
                     dialog.setVisible(true);
                 }
@@ -118,10 +330,10 @@ public class MainTable extends JFrame
         
         
         
-        buttonPanel.add(button1);
-        buttonPanel.add(button2);
-        buttonPanel.add(button3);
-        panel.add(buttonPanel, BorderLayout.SOUTH);
+        toolBar.add(button1);
+        toolBar.add(button2);
+        toolBar.add(button3);
+        panel.add(toolBar, BorderLayout.NORTH);
         
         frame.add(panel);
 

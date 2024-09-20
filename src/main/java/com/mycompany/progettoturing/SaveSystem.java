@@ -12,6 +12,7 @@ import javax.swing.table.DefaultTableModel;
 
 public class SaveSystem 
 {
+    static String fileDir = "C:\\JobLearning\\Progetto\\ProgettoTuring\\Rubrica\\";
     boolean Save(int index, String nome, String cognome,String indirizzo, String telefono, int eta, AddressBook aBook)
     {
         aBook.ModifyPearson(index, nome, cognome, indirizzo, telefono, eta);
@@ -38,7 +39,7 @@ public class SaveSystem
     
     boolean Save(AddressBook aBook)
     {
-        File fileRubrica = new File("Informazioni.txt");
+        File fileRubrica = new File(fileDir+"Informazioni.txt");
         try 
         {
             PrintStream pStream = new PrintStream(fileRubrica);
@@ -61,7 +62,7 @@ public class SaveSystem
     
     void Load(AddressBook aBook, DefaultTableModel model)
     {
-        File fileRubrica = new File("Informazioni.txt");
+        File fileRubrica = new File(fileDir+"Informazioni.txt");
         try 
         {
             Scanner scanner = new Scanner(fileRubrica);
