@@ -30,9 +30,9 @@ public class MainTable extends JFrame
     DefaultTableModel model;
     JFrame frame;
     JFrame loginFrame;
-    AddressBook aBook;
+    Addressbook aBook;
     
-    MainTable(AddressBook aBook)
+    MainTable(Addressbook aBook)
     {
         this.aBook = aBook;
     }

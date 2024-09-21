@@ -11,7 +11,7 @@ public class Application
         System.out.println("Application start");
         SaveSystem save = new SaveSystem();
         Logger logger = new Logger();
-        AddressBook adBook = new AddressBook(save); 
+        Addressbook adBook = new Addressbook(save); 
         MainTable myUI = new MainTable(adBook);
         myUI.LoginUI(save, logger);
         

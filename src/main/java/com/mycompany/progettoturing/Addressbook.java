@@ -2,12 +2,12 @@
 package com.mycompany.progettoturing;
 import java.util.Vector;
 
-public class AddressBook 
+public class Addressbook 
 {
     private Vector<Persona> listOfPeople;
     SaveSystem save;
     
-    AddressBook(SaveSystem save)
+    Addressbook(SaveSystem save)
     {
         listOfPeople = new Vector<Persona>();
         this.save = save;

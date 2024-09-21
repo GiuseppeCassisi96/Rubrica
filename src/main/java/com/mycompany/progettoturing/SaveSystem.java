@@ -31,7 +31,7 @@ public class SaveSystem
     }
     
     //Save all informations in the user's file  
-    boolean Save(int index, String nome, String cognome,String indirizzo, String telefono, int eta, AddressBook aBook)
+    boolean Save(int index, String nome, String cognome,String indirizzo, String telefono, int eta, Addressbook aBook)
     {
         aBook.ModifyPearson(index, nome, cognome, indirizzo, telefono, eta);
         File fileRubrica = new File("Informazioni/"+fileName+".txt");
@@ -56,7 +56,7 @@ public class SaveSystem
     }
     
     //Save all informations in the user's file  
-    boolean Save(AddressBook aBook)
+    boolean Save(Addressbook aBook)
     {
         File fileRubrica = new File("Informazioni/"+fileName+".txt");
         try 
@@ -81,7 +81,7 @@ public class SaveSystem
     
     
     //Load all informations of the user 
-    void Load(AddressBook aBook, DefaultTableModel model)
+    void Load(Addressbook aBook, DefaultTableModel model)
     {
         File fileRubrica = new File("Informazioni/"+fileName+".txt");
         if(!fileRubrica.exists())
