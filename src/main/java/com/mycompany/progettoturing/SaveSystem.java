@@ -3,20 +3,38 @@ package com.mycompany.progettoturing;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.io.PrintStream;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.Scanner;
-import java.util.Vector;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.table.DefaultTableModel;
 
 public class SaveSystem 
 {
-    static String fileDir = "C:\\JobLearning\\Progetto\\ProgettoTuring\\Rubrica\\";
+    private String fileName;
+    SaveSystem()
+    {
+        Path directoryPath = Paths.get("Informazioni");
+        if (!Files.exists(directoryPath)) {
+            try 
+            {
+                Files.createDirectories(directoryPath);
+            } catch (IOException e) 
+            {
+                e.printStackTrace();
+            }
+        }
+    }
+    
+    //Save all informations in the user's file  
     boolean Save(int index, String nome, String cognome,String indirizzo, String telefono, int eta, AddressBook aBook)
     {
         aBook.ModifyPearson(index, nome, cognome, indirizzo, telefono, eta);
-        File fileRubrica = new File("Informazioni.txt");
+        File fileRubrica = new File("Informazioni/"+fileName+".txt");
         try 
         {
             PrintStream pStream = new PrintStream(fileRubrica);
@@ -37,9 +55,10 @@ public class SaveSystem
         return true;
     }
     
+    //Save all informations in the user's file  
     boolean Save(AddressBook aBook)
     {
-        File fileRubrica = new File(fileDir+"Informazioni.txt");
+        File fileRubrica = new File("Informazioni/"+fileName+".txt");
         try 
         {
             PrintStream pStream = new PrintStream(fileRubrica);
@@ -60,13 +79,16 @@ public class SaveSystem
         return true;
     }
     
+    
+    //Load all informations of the user 
     void Load(AddressBook aBook, DefaultTableModel model)
     {
-        File fileRubrica = new File(fileDir+"Informazioni.txt");
+        File fileRubrica = new File("Informazioni/"+fileName+".txt");
+        if(!fileRubrica.exists())
+            return;
         try 
         {
             Scanner scanner = new Scanner(fileRubrica);
-            Vector<String> values;
             while(scanner.hasNextLine())
             {
                 String line = scanner.nextLine();
@@ -81,5 +103,19 @@ public class SaveSystem
         {
             Logger.getLogger(SaveSystem.class.getName()).log(Level.SEVERE, null, ex);
         }
+    }
+
+    /**
+     * @return the fileName
+     */
+    public String getFileName() {
+        return fileName;
+    }
+
+    /**
+     * @param fileName the fileName to set
+     */
+    public void setFileName(String fileName) {
+        this.fileName = fileName;
     }
 }

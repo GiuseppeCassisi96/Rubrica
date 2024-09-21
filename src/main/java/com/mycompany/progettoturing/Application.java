@@ -10,10 +10,10 @@ public class Application
     {
         System.out.println("Application start");
         SaveSystem save = new SaveSystem();
+        Logger logger = new Logger();
         AddressBook adBook = new AddressBook(save); 
         MainTable myUI = new MainTable(adBook);
-        myUI.InitUI();  
-        save.Load(adBook, myUI.model);
+        myUI.LoginUI(save, logger);
         
     }
 }
